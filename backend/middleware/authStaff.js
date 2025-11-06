@@ -19,3 +19,25 @@ exports.loginStaff = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+const authStaff = (req, res, next) => {
+  try {
+    const { stoken } = req.headers; // stoken = staff token
+    if (!stoken) {
+      return res.json({ success: false, message: "Not Authorized. Please login again." });
+    }
+
+    const decoded = jwt.verify(stoken, process.env.JWT_SECRET);
+    if (decoded.role !== "nurse" && decoded.role !== "receptionist") {
+      return res.json({ success: false, message: "Access Denied" });
+    }
+
+    req.staff = decoded;
+    next();
+  } catch (error) {
+    console.log("Staff auth error:", error);
+    res.json({ success: false, message: "Authentication failed", error: error.message });
+  }
+};
+
+export default authStaff;

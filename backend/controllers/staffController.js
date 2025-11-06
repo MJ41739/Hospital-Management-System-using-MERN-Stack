@@ -1,5 +1,6 @@
 import Staff from "../models/staffModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const createAdmin = async (req, res) => {
   try {
@@ -108,5 +109,35 @@ export const deleteAdmin = async (req, res) => {
     res.status(200).json({ message: "Admin deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: "Error deleting admin", error: err.message });
+  }
+};
+
+export const loginStaff = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find staff by email
+    const staff = await Staff.findOne({ email });
+    if (!staff) {
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, staff.password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: staff._id, role: staff.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ success: true, token, role: staff.role });
+  } catch (error) {
+    console.error("Staff login error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

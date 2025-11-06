@@ -9,6 +9,13 @@ const staffSchema = new mongoose.Schema({
     enum: ["admin", "nurse", "receptionist", "superadmin"],
     required: true,
   },
+  phone: { type: String },
+  address: {
+    line1: String,
+    line2: String,
+  },
+  salary: { type: Number },
+  joinedOn: { type: Date, default: Date.now },
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });
 

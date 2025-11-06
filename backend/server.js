@@ -31,6 +31,8 @@ app.use(cors({
 app.use("/api/user", userRouter)
 app.use("/api/admin", adminRouter)
 app.use("/api/doctor", doctorRouter)
+app.use("/api/staff", staffRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("API Working")
@@ -38,7 +40,6 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/superadmin", superAdminRoutes);
-app.use("/api/staff", staffRoutes); // for admin, nurse, etc.
 
 app.listen(port, () => console.log(`Server started on PORT:${port}`))
 
