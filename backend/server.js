@@ -23,7 +23,7 @@ connectCloudinary()
 app.use(express.json())
 app.use(cors({
   // origin: ['http://localhost:5173','http://localhost:5174'],
-  origin: ['https://hospitalmanagementsystem-nextastra.vercel.app','https://admin-hospitalmanagementsystem-nextastra.vercel.app'],
+  origin: [`${process.env.ADMIN_URL}`,`${process.env.USER_URL}`],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }))
