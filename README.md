@@ -153,8 +153,13 @@ Dashboard: http://localhost:5173/staff-dashboard
 
 ## Deployment
 
-Frontend: Vercel
+Frontend: Vercel - 
+    For Users - https://hospitalmanagementsystem-nextastra.vercel.app
+    For Admins - https://admin-hospitalmanagementsystem-nextastra.vercel.app
+    For Super Admin - https://admin-hospitalmanagementsystem-nextastra.vercel.app/superadmin/login
+
 Backend: Render
+
 Database: MongoDB Atlas
 
 ## Author
