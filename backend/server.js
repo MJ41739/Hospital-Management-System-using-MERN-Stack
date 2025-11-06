@@ -6,6 +6,12 @@ import connectCloudinary from "./config/cloudinary.js"
 import userRouter from "./routes/userRoute.js"
 import doctorRouter from "./routes/doctorRoute.js"
 import adminRouter from "./routes/adminRoute.js"
+import Staff from "./models/staffModel.js";
+import bcrypt from "bcrypt";
+import { createSuperAdminIfNotExists } from "./utils/createSuperAdmin.js";
+import superAdminRoutes from "./routes/superAdminRoute.js";
+import staffRoutes from "./routes/staffRoutes.js";
+
 
 // app config
 const app = express()
@@ -30,4 +36,14 @@ app.get("/", (req, res) => {
   res.send("API Working")
 });
 
+// Routes
+app.use("/api/superadmin", superAdminRoutes);
+app.use("/api/staff", staffRoutes); // for admin, nurse, etc.
+
 app.listen(port, () => console.log(`Server started on PORT:${port}`))
+
+
+
+
+
+createSuperAdminIfNotExists();

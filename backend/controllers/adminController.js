@@ -5,26 +5,48 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/userModel.js";
+import Staff from "../models/staffModel.js";
 
 // API for admin login
 const loginAdmin = async (req, res) => {
-    try {
+  try {
+    const { email, password } = req.body;
 
-        const { email, password } = req.body
-
-        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET)
-            res.json({ success: true, token })
-        } else {
-            res.json({ success: false, message: "Invalid credentials" })
-        }
-
-    } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+    // 1️⃣ Check if admin exists
+    const admin = await Staff.findOne({ email });
+    if (!admin) {
+      return res.status(404).json({ success: false, message: 'Admin not found' });
     }
 
-}
+    // 2️⃣ Compare password using bcrypt
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    // 3️⃣ Generate JWT token
+    const token = jwt.sign(
+      { id: admin._id, role: 'admin' },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    // 4️⃣ Send response
+    res.status(200).json({
+      success: true,
+      message: 'Admin login successful',
+      token,
+      admin: {
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
+      },
+    });
+  } catch (error) {
+    console.error('Error in admin login:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
 
 
 // API to get all appointments list

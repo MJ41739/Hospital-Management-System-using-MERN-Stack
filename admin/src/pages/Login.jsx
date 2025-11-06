@@ -3,11 +3,13 @@ import React, { useContext, useState } from 'react'
 import { DoctorContext } from '../context/DoctorContext'
 import { AdminContext } from '../context/AdminContext'
 import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
 
   const [state, setState] = useState('Admin')
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -25,6 +27,8 @@ const Login = () => {
       if (data.success) {
         setAToken(data.token)
         localStorage.setItem('aToken', data.token)
+        alert("Login successful!");
+        navigate("/admin/dashboard");
       } else {
         toast.error(data.message)
       }
@@ -35,11 +39,14 @@ const Login = () => {
       if (data.success) {
         setDToken(data.token)
         localStorage.setItem('dToken', data.token)
+        alert("Login successful!");
+        navigate("/doctor/dashboard");
       } else {
         toast.error(data.message)
       }
 
     }
+  
 
   }
 

@@ -99,6 +99,16 @@ const getProfile = async (req, res) => {
     }
 }
 
+const getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({});
+    console.log("Doctors fetched:", doctors);
+    res.status(200).json({ success: true, doctors });
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 // API to update user profile
 const updateProfile = async (req, res) => {
 
@@ -347,6 +357,7 @@ export {
     loginUser,
     registerUser,
     getProfile,
+    getAllDoctors,
     updateProfile,
     bookAppointment,
     listAppointment,
