@@ -164,6 +164,6 @@ Database: MongoDB Atlas
 
 ## Author
 
-Developed by: Your Name
+Developed by: Mayur Jadhav
 GitHub: https://github.com/MJ41739
 LinkedIn: https://www.linkedin.com/in/mayur-j41739
